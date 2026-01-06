@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>何虎 - web前端开发</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #00b47d;
+      --accent-color: #e74c3c;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --text-color: #333;
+      --light-text: #6c757d;
+      --border-color: #e9ecef;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-color);
+      line-height: 1.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .resume-container {
+      width: 210mm;
+      min-height: 297mm;
+      background: white;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 头部信息样式 - 优化后 */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+      color: white;
+      padding: 16px 40px 20px;
+      position: relative;
+    }
+
+    .header-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .name-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .name {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 20px;
+      color: var(--secondary-color);
+      font-weight: 500;
+    }
+
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      justify-content: center;
+      height: 36px;
+    }
+
+    .contact-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .contact-item i {
+      margin-right: 8px;
+      color: var(--secondary-color);
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+      font-size: 14px;
+      display: inline-block;
+      vertical-align: middle;
+      transform: translateY(-1px);
+    }
+
+    .contact-item span {
+      white-space: nowrap;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* 内容区样式 */
+    .content {
+      padding: 30px 40px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--secondary-color);
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 10px;
+      color: var(--secondary-color);
+    }
+
+    /* 专业技能样式 - 每行一个 */
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill-item {
+      font-size: 14px;
+      line-height: 1.5;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .skill-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+    }
+
+    .highlight {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    /* 工作经历样式 */
+    .experience-item {
+      margin-bottom: 25px;
+    }
+
+    .company-period {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .company {
+      font-weight: 600;
+      color: var(--primary-color);
+      font-size: 17px;
+    }
+
+    .period {
+      color: var(--light-text);
+      font-size: 15px;
+    }
+
+    .responsibilities {
+      padding-left: 20px;
+    }
+
+    .responsibilities li {
+      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .job-summary {
+      background-color: rgba(0, 180, 125, 0.1);
+      padding: 15px;
+      border-left: 3px solid var(--secondary-color);
+      margin-bottom: 15px;
+      font-size: 14px;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+
+    /* 工作分类样式 */
+    .work-category {
+      margin-bottom: 20px;
+    }
+
+    .category-title {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 16px;
+      padding-left: 10px;
+      border-left: 3px solid rgba(0, 180, 125, 0.1);
+    }
+
+    /* 按钮样式 */
+    .action-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .download-btn {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .download-btn i {
+      margin-right: 5px;
+    }
+
+    .download-btn:hover {
+      background: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 打印样式 */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .resume-container {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        box-shadow: none;
+      }
+
+      .action-buttons {
+        display: none;
+      }
+
+      /* 防止内容被分页截断 */
+      .section {
+        page-break-inside: avoid;
+      }
+
+      .experience-item {
+        page-break-inside: avoid;
+      }
+
+      .work-category {
+        page-break-inside: avoid;
+      }
+
+      .skill-item {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* 加载提示 */
+    .loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .loading-spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--secondary-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .name-title-container {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .contact-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <p>正在生成PDF，请稍候...</p>
+  </div>
+
+  <div class="resume-container" id="resume">
+    <div class="action-buttons">
+      <button class="download-btn" id="downloadPdfBtn">
+        <i class="fas fa-file-pdf"></i> 生成PDF
+      </button>
+    </div>
+
+    <!-- 头部信息 - 优化后 -->
+    <div class="header">
+      <div class="header-main">
+        <div class="name-title-container">
+          <h1 class="name">何虎</h1>
+          <p class="title">web前端开发</p>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <span>185 8248 0421</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>tigerhee@qq.com</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Base地: 成都</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-graduation-cap"></i>
+          <span>本科(2012-2016)四川理工</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-briefcase"></i>
+          <span>9年工作经验</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="content">
+      <!-- 专业技能 -->
+      <div class="section">
+        <h2 class="section-title">
+          <i class="fas fa-tools"></i> 专业技能
+        </h2>
+        <div class="skills-list">
+          <div class="skill-item">熟悉 <span class="highlight">React 生态</span>相关技术栈包括：<span class="highlight">React,
+              Redux, umi, dva, zustand, Next.js</span></div>
+          <div class="skill-item">熟悉 <span class="highlight">React Native</span> 开发</div>
+          <div class="skill-item">熟悉 <span class="highlight">Taro, taro UI</span> 开发小程序，contribute 过其 git 仓库</div>
+          <div class="skill-item">熟悉 <span class="highlight">Webpack, Rollup</span> 配置，<span
+              class="highlight">babel</span> 插件</div>
+          <div class="skill-item">熟练使用 <span class="highlight">Whistle Charles</span> 等代理工具辅助开发 & 调试</div>
+          <div class="skill-item">了解 <span class="highlight">web3</span> 相关钱包交互和智能合约调用, privy, Solidity, 插件钱包开发等</div>
+          <div class="skill-item">了解服务端 <span class="highlight">Nest, Meteor.js, MongoDB</span></div>
+          <div class="skill-item">了解 <span class="highlight">Vue2</span> 相关技术栈</div>
+        </div>
+      </div>
+
+      <!-- 工作经历 -->
+      <div class="section">
+        <h2 class="section-title">
+          <i class="fas fa-briefcase"></i> 工作经历
+        </h2>
+
+        <div class="experience-item">
+          <div class="company-period">
+            <span class="company">KuCoin</span>
+            <span class="period">2020.04 - 2025.11</span>
+          </div>
+          <div class="job-summary">
+            在职期间 <span class="highlight">0 线上故障</span>，近期主要负责<span
+              class="highlight">KYC&用户中心</span>的前端开发和管理工作，以及前端异常<span class="highlight">可观测的基建</span>。获得过 2024 年优秀员工奖。
+          </div>
+
+          <div class="work-category">
+            <div class="category-title">业务方向</div>
+            <ul class="responsibilities">
+              <li>参与公链 KuChain 的现货 <span class="highlight">Dex</span> 的核心模块开发，包括：<span class="highlight">Order
+                  Book，深度图，交易面板，订单中心</span>等模块；</li>
+              <li>使用 <span class="highlight">React, Webpack</span> 搭建脚手架开发供 KuChain Dex 使用的<span
+                  class="highlight">插件钱包</span>；</li>
+              <li>在 KC 创新实验室使用 <span class="highlight">umi, dva</span> 上线多个 <span class="highlight">Hybrid H5</span>
+                小游戏；</li>
+              <li>参与 <span class="highlight">web3 NFT </span>交易市场项目，负责 C 端市场(钱包交互，NFT 列表等)，项目相关 admin 以及配套的活动页面开发；</li>
+              <li>使用 <span class="highlight">SystemJS, React, Webpack</span> 搭建支持<span class="highlight">微服务</span>模式的
+                Admin 2.0 系统；</li>
+              <li>参与用户中心的<span class="highlight">登录注册, API 管理, 子帐号, 安全中心，合规</span>等业务的功能开发，站点多租户改造，性能优化等，主要包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>人机校验组件接入(hCaptcha, GeeTest)；</li>
+                  <li>三方帐号登录注册(tg, google, apple)；</li>
+                  <li>托管子账号；</li>
+                  <li>用户组项目单测覆盖率提升到60%+，离线包方案接入，SSG 接入，Hybrid H5 登录态续期，设备指纹接入，cypress 巡检用例完善等；</li>
+                  <li>用户组项目从 cra 架构迁移至 Next.js 的基础框架搭建：完善各种工具方法和依赖包兼容升级，基础组件改造，dva model 注册，部署流程打通；</li>
+                </ul>
+              </li>
+              <li>使用 <span class="highlight">Next.js, zustand, ts</span> 升级 KuCoin 官网首页为 <span
+                  class="highlight">SSR</span>；使其 FCP, LCP 达到1.4S</li>
+              <li>作为 <span class="highlight">KYC 的前端负责人</span>，保障业务需求高质量交付，主要包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>使用 RN 重构 APP 端 KYC 首页；</li>
+                  <li>重构 web 端 Global KYC 流程；</li>
+                  <li>接入 Sumsub 使 KYC 成本降低40%，通过率提升10%+；</li>
+                  <li>从 0 到 1 设计了基于 JSON Schema 渲染的合规标准系统，支持处理多种表单类型，表单间多种联动关系、问卷、证件 OCR 等，支持通过后端配置动态生成不同的合规信息收集流程,
+                    目前已应用于主站，泰国，土耳其，澳洲，欧洲等租户站的 KYC/KYB 流程，并为支付开卡提供 20 多种合规信息收集流程；</li>
+                  <li>搭建业务相关告警大盘促进团队及时响应线上问题，搭建神策看板分析流程转化率以及观测功能是否正常运行；</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="work-category">
+            <div class="category-title">基建方向</div>
+            <ul class="responsibilities">
+              <li>参与 KC <span class="highlight">web 组件库</span>开发；</li>
+              <li>实现并推进 Hybrid H5 离线缓存方案；</li>
+              <li>参与 KC <span class="highlight">React Native 组件库</span>开发；</li>
+              <li>前端项目 <span class="highlight">Pollyfill 治理</span>：统一使用 preset-env 生成 Pollyfill
+                代码，去掉@babel/runtime，@babel/runtime-corejs3 等错误配置生成的额外 Pollyfill 代码，降低业务项目及公共 npm 包的代码体积提升页面性能评分；</li>
+              <li>参与前端<span class="highlight">可观测基建</span>包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>使用 <span class="highlight">Nest, mongoDB</span>
+                    开发的告警管理系统，收敛所有前端的告警数据支持告警状态的流转管理便于分析各告警组的告警有效率，响应率等，同时还有定时任务通知值班人员及时处理手上的异常告警避免线上问题持续影响用户；</li>
+                  <li>开发域名连通性检测的<span class="highlight">网络探针</span>工具使团队拥有收集封禁地区用户网络连通性的能力，高效解决用户问题；</li>
+                  <li><span class="highlight">白屏告警、静态资源异常告警、页面死循环告警</span>等帮助各业务线快速响应线上问题；</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="company-period">
+            <span class="company">天宝旅游</span>
+            <span class="period">2018.03 - 2020.03</span>
+          </div>
+          <ul class="responsibilities">
+            <li>使用 <span class="highlight">Vue2, Nuxt</span> 开发机票预订系统的 C 端网站；</li>
+            <li>使用 <span class="highlight">create-react-app, Redux</span> 开发 B 端的机票预订系统；</li>
+            <li>使用 <span class="highlight">Taro, Taro UI, Redux</span> 开发机票预订小程序：<span class="highlight">天宝国际航服</span>；
+            </li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="company-period">
+            <span class="company">北京优炫软件</span>
+            <span class="period">2017.06 - 2018.03</span>
+          </div>
+          <ul class="responsibilities">
+            <li>负责前端框架基础搭建, 项目代码及<span class="highlight">性能优化</span>；</li>
+            <li>参与可视化运维系统的开发，图表绘制主要使用 <span class="highlight">D3, ECharts</span>；</li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="company-period">
+            <span class="company">成都必酷科技有限公司</span>
+            <span class="period">2016.07 - 2017.06</span>
+          </div>
+          <ul class="responsibilities">
+            <li>参与时装租赁服务的 web 端网站开发以及使用 <span class="highlight">APICloud</span> 开发商城 APP；</li>
+            <li>使用 <span class="highlight">Meteor.js, React, MongoDB</span> 全栈开发公司的后台管理系统；</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      const loading = document.getElementById('loading');
+      const resume = document.getElementById('resume');
+      const actionButtons = document.querySelector('.action-buttons');
+
+      // 生成PDF功能 - 恢复稳定版本
+      downloadPdfBtn.addEventListener('click', function () {
+        loading.style.display = 'flex';
+
+        // 临时隐藏按钮
+        actionButtons.style.display = 'none';
+
+        // 使用html2canvas和jsPDF生成PDF
+        html2canvas(resume, {
+          scale: 2, // 提高清晰度
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+          removeContainer: true,
+          onclone: function (clonedDoc) {
+            const clonedResume = clonedDoc.getElementById('resume');
+            clonedResume.style.width = '210mm';
+            clonedResume.style.minHeight = '297mm';
+          }
+        }).then(canvas => {
+          const pdf = new jspdf.jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+            compress: true
+          });
+
+          // A4纸张尺寸（mm）
+          const pdfWidth = 210;
+          const pdfHeight = 297;
+
+          // canvas的实际尺寸（像素）
+          const canvasWidth = canvas.width;
+          const canvasHeight = canvas.height;
+
+          // 计算比例
+          const ratio = canvasWidth / pdfWidth;
+
+          // 每页在canvas上的高度（像素）
+          const pageHeightInCanvas = pdfHeight * ratio;
+
+          // 计算总页数
+          const totalPages = Math.ceil(canvasHeight / pageHeightInCanvas);
+
+          // 如果只有一页，直接输出
+          if (totalPages === 1) {
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const imgWidth = pdfWidth;
+            const imgHeight = (canvasHeight * pdfWidth) / canvasWidth;
+            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+          } else {
+            // 多页处理 - 简单分页，避免内容被剪切
+            let currentY = 0;
+
+            for (let page = 0;page < totalPages;page++) {
+              if (page > 0) {
+                pdf.addPage();
+              }
+
+              // 计算当前页应该结束的位置
+              let targetEndY = currentY + pageHeightInCanvas;
+
+              // 确保不超出canvas范围
+              targetEndY = Math.min(targetEndY, canvasHeight);
+
+              // 计算当前页的实际高度
+              const sourceHeight = targetEndY - currentY;
+
+              if (sourceHeight <= 0) break;
+
+              // 创建临时canvas来裁剪当前页的内容
+              const pageCanvas = document.createElement('canvas');
+              pageCanvas.width = canvasWidth;
+              pageCanvas.height = sourceHeight;
+
+              const pageCtx = pageCanvas.getContext('2d');
+              // 填充白色背景
+              pageCtx.fillStyle = '#ffffff';
+              pageCtx.fillRect(0, 0, canvasWidth, sourceHeight);
+
+              // 从原canvas中截取当前页的内容
+              pageCtx.drawImage(
+                canvas,
+                0, currentY, canvasWidth, sourceHeight,
+                0, 0, canvasWidth, sourceHeight
+              );
+
+              // 转换为图片数据
+              const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+
+              // 计算在PDF中的高度
+              const pdfPageHeight = sourceHeight / ratio;
+
+              // 添加到PDF
+              pdf.addImage(pageImgData, 'PNG', 0, 0, pdfWidth, pdfPageHeight, undefined, 'FAST');
+
+              // 更新当前位置
+              currentY = targetEndY;
+
+              // 如果已经到达底部，提前结束
+              if (currentY >= canvasHeight) break;
+            }
+          }
+
+          // 保存PDF
+          pdf.save('web前端-何虎-9年.pdf');
+
+          // 恢复按钮显示
+          actionButtons.style.display = 'flex';
+          loading.style.display = 'none';
+        }).catch(error => {
+          console.error('生成PDF时出错:', error);
+          actionButtons.style.display = 'flex';
+          loading.style.display = 'none';
+          alert('生成PDF失败，请重试');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
