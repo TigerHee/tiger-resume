@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>何虎 - 高级前端工程师</title>
+  <title>何虎 - web前端开发</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -128,11 +128,11 @@
 
     /* 内容区样式 */
     .content {
-      padding: 24px 40px 28px;
+      padding: 30px 40px;
     }
 
     .section {
-      margin-bottom: 22px;
+      margin-bottom: 30px;
     }
 
     .section-title {
@@ -149,11 +149,6 @@
     .section-title i {
       margin-right: 10px;
       color: var(--secondary-color);
-    }
-
-    .profile-text {
-      font-size: 14px;
-      line-height: 1.7;
     }
 
     /* 专业技能样式 - 每行一个 */
@@ -188,7 +183,7 @@
 
     /* 工作经历样式 */
     .experience-item {
-      margin-bottom: 18px;
+      margin-bottom: 25px;
     }
 
     .company-period {
@@ -220,9 +215,9 @@
 
     .job-summary {
       background-color: rgba(0, 180, 125, 0.1);
-      padding: 12px 15px;
+      padding: 15px;
       border-left: 3px solid var(--secondary-color);
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       font-size: 14px;
       border-radius: 0 4px 4px 0;
       line-height: 1.6;
@@ -380,7 +375,7 @@
       <div class="header-main">
         <div class="name-title-container">
           <h1 class="name">何虎</h1>
-          <p class="title">高级前端工程师</p>
+          <p class="title">web前端开发</p>
         </div>
       </div>
 
@@ -415,40 +410,26 @@
     <!-- 内容区 -->
     <div class="content">
 
-      <!-- 个人简介 -->
-      <div class="section">
-        <h2 class="section-title">
-          <i class="fas fa-user"></i> 个人简介
-        </h2>
-        <p class="profile-text">
-          10 年前端，擅长把 <span class="highlight">AI 工程化</span>进存量重构与复杂业务交付：用 Cursor + Project Rule 约束架构边界，而不是只当对话式改代码。
-          KuCoin 期间作为 <span class="highlight">用户中心 KYC 前端负责人</span>，主导 JSON Schema 合规引擎与官网 SSR，并建设前端可观测与告警治理，在职
-          <span class="highlight">0 线上故障</span>。近期在交易所场景落地 WebSocket + Canvas 实时盘,预测市场，以及 Vue 公共包到 Monorepo 的迁移。
-        </p>
-      </div>
-
       <!-- 专业技能 -->
       <div class="section">
         <h2 class="section-title">
           <i class="fas fa-tools"></i> 专业技能
         </h2>
         <div class="skills-list">
-          <div class="skill-item"><span class="highlight">AI 工程化</span>：熟练使用 <span class="highlight">Cursor</span>，能编写高质量
-            Prompt 与 <span class="highlight">Project Rule</span>；擅长存量逻辑梳理、跨栈迁移重构，并用规则固定组件边界、状态归属及 Canvas / React
-            职责，避免 Agent 破坏架构。</div>
-          <div class="skill-item"><span class="highlight">性能与架构</span>：有 <span class="highlight">Next.js SSR / SSG</span>
-            落地经验（官网首页 FCP / LCP <span class="highlight">1.4s 内</span>）；主导过 cra → Next.js 迁移、<span
-              class="highlight">Polyfill 治理</span>减包体、Hybrid 离线包、<span class="highlight">SystemJS 微前端</span> Admin 系统。
+          <div class="skill-item">熟悉 <span class="highlight">React 生态</span>相关技术栈包括：<span class="highlight">React,
+              Redux, umi, dva, zustand, Next.js</span></div>
+          <div class="skill-item">熟练使用 <span class="highlight">Cursor</span>，能够编写高质量 Prompt ，善于利用 AI 进行历史逻辑梳理及迁移重构</div>
+          <div class="skill-item">熟悉 <span class="highlight">React Native</span> 开发</div>
+          <div class="skill-item">熟悉 <span class="highlight">Taro, taro UI</span> 开发小程序，contribute 过其 git 仓库</div>
+          <div class="skill-item">熟悉 <span class="highlight">Webpack, Rollup</span> 配置，<span
+              class="highlight">babel</span> 插件使用与开发</div>
+          <div class="skill-item">熟练使用 <span class="highlight">Whistle, Charles</span> 等代理工具辅助开发 & 调试</div>
+          <div class="skill-item">了解 <span class="highlight">web3</span> 相关钱包交互和智能合约调用, Privy, Solidity, 插件钱包开发等</div>
+          <div class="skill-item">了解服务端 <span class="highlight">Nest, Meteor.js, MongoDB</span>，用其开发过工具平台和 Admin 系统
           </div>
-          <div class="skill-item"><span class="highlight">可观测与质量治理</span>：从 0 建设前端告警闭环（<span
-              class="highlight">白屏 / 静态资源异常 / 死循环</span>检测）、Nest + Mongo 告警工单流转、域名连通性探针；单测覆盖率
-            <span class="highlight">60%+</span>、Cypress 巡检。</div>
-          <div class="skill-item"><span class="highlight">React 生态</span>：React、Redux、umi、dva、Zustand、Next.js；熟悉
-            <span class="highlight">React Native</span>、<span class="highlight">Taro</span>（contribute 过仓库）；熟悉
-            Webpack / Rollup / Babel、Nest / MongoDB，以及 Web3 钱包交互。</div>
+          <div class="skill-item">了解 <span class="highlight">Vue2</span> 相关技术栈</div>
         </div>
       </div>
-
       <!-- 工作经历 -->
       <div class="section">
         <h2 class="section-title">
@@ -461,14 +442,18 @@
             <span class="period">2026.01 - 2026.08</span>
           </div>
           <ul class="responsibilities">
-            <li>猜涨跌实时盘：<span class="highlight">WebSocket</span> 推送行情 / 赔率 → <span class="highlight">Zustand</span>
-              作为唯一数据源 → <span class="highlight">Canvas</span> 绘制「时间 × 价格」热力网格与价格线。沉淀 <span class="highlight">AI
-                Rule</span> 固定「状态在 store、绘制在 Canvas」，避免 Agent 把高频 tick 写进 React 树；命中结算与 React 事件桥接，保证实时刷新可维护、不掉帧。</li>
-            <li>将 Vue 打包的公共导航 npm 包重构为 <span class="highlight">Monorepo Package</span>，梳理历史 API
-              与副作用后统一多站点导航与依赖管理，降低跨项目重复维护成本。</li>
-            <li>负责<span class="highlight">预测市场</span>事件详情页，落地 <span class="highlight">Orderbook、图表、下单区</span>，打通行情到下单闭环；同步用
-              <span class="highlight">Next.js</span> 交付 U 卡、快捷买币、首页重构及子站点 <span class="highlight">Exbit</span>
-              开站，并优化合约 K 线下单与订单模块。</li>
+            <li>使用 <span class="highlight">Next.js</span> 参与 <span class="highlight">U 卡</span>、<span
+                class="highlight">快捷买币</span>、<span class="highlight">首页重构</span>等项目开发及其使用到的 UI 组件提取封装；</li>
+            <li>基于 <span class="highlight">React + Zustand</span> 设计项目架构与状态模型，沉淀 <span class="highlight">AI
+                Rule</span> 约束组件边界与 <span class="highlight">Canvas</span> 渲染职责；通过 <span
+                class="highlight">WebSocket</span> 推送实时行情与赔率数据至 <span class="highlight">Zustand</span>，再驱动
+              <span class="highlight">Canvas</span> 渲染「时间 × 价格」赔率热力网格、价格线联动与命中结算交互，落地猜涨跌事件合约游戏。</li>
+            <li>重构 web 公共导航栏组件从 vue 打包出的 npm 包为 <span class="highlight">Monorepo</span>
+              项目的公共 <span class="highlight">Package</span>，统一多站点导航能力与依赖管理，减少跨项目重复维护成本；</li>
+            <li>独立负责新增子站点 <span class="highlight">Exbit</span> 的前端搭建与落地，完成站点结构、核心页面与公共能力接入，支撑业务快速开站上线；</li>
+            <li>参与合约交易业务的 <span class="highlight">K 线下单</span>，合约订单模块优化，提升下单效率与订单可读性；</li>
+            <li>参与<span class="highlight">预测市场</span>开发，负责事件详情页，落地 <span
+                class="highlight">Orderbook、图表、下单区</span>等核心模块，完成行情展示到下单闭环；</li>
           </ul>
         </div>
 
@@ -478,48 +463,61 @@
             <span class="period">2020.04 - 2025.11</span>
           </div>
           <div class="job-summary">
-            <span class="highlight">用户中心 KYC 前端负责人</span>；主导合规配置化引擎与官网 SSR。建设前端可观测与告警治理，在职
-            <span class="highlight">0 线上故障</span>，2024 优秀员工。
+            在职期间 <span class="highlight">0 线上故障</span>，离职前主要负责<span
+              class="highlight">KYC&用户中心</span>的前端开发和管理工作，以及前端异常<span class="highlight">可观测的基建</span>。获得过2024年优秀员工奖。
           </div>
 
           <div class="work-category">
-            <div class="category-title">复杂业务架构</div>
+            <div class="category-title">业务方向</div>
             <ul class="responsibilities">
-              <li>从 0 设计 <span class="highlight">JSON Schema 驱动的合规表单引擎</span>：支持多表单类型、字段 / 表单联动、问卷、证件 OCR；后端配置即可生成不同地区
-                KYC / KYB 流程。已覆盖主站及泰国 / 土耳其 / 澳洲 / 欧洲等<span class="highlight">合规站</span>，并为支付开卡提供
-                <span class="highlight">20+</span> 信息收集流程。</li>
-              <li>作为 <span class="highlight">KYC 前端负责人</span>：用 React Native 重构 APP KYC 首页，重构 Web Global KYC；接入
-                <span class="highlight">Sumsub</span> 使成本降低 <span class="highlight">40%</span>、通过率提升
-                <span class="highlight">10%+</span>。</li>
-              <li>使用 <span class="highlight">SystemJS + React + Webpack</span> 搭建微前端 <span
-                  class="highlight">Admin 2.0</span>；用户中心覆盖登录注册（hCaptcha / GeeTest、TG / Google / Apple 登录）、API
-                管理、托管子账号、安全中心及合规站适配。</li>
-              <li>公链 KuChain 现货 <span class="highlight">Dex</span>（Order Book、深度图、交易面板、订单中心）及插件钱包开发；Web3
-                <span class="highlight">NFT</span> 市场 C 端（钱包交互、列表）、Admin 与活动页。</li>
+              <li>参与公链 KuChain 的现货 <span class="highlight">Dex</span> 的核心模块开发，包括：<span class="highlight">Order
+                  Book，深度图，交易面板，订单中心</span>等模块；</li>
+              <li>使用 <span class="highlight">React, Webpack</span> 搭建脚手架开发供 KuChain Dex 使用的<span
+                  class="highlight">插件钱包</span>；</li>
+              <li>在 KC 创新实验室使用 <span class="highlight">umi, dva</span> 上线多个 <span class="highlight">Hybrid H5</span>
+                小游戏；</li>
+              <li>参与 <span class="highlight">web3 NFT </span>交易市场项目，负责 C 端市场(钱包交互，NFT 列表等)，项目相关 admin 以及配套的活动页面开发；</li>
+              <li>使用 <span class="highlight">SystemJS, React, Webpack</span> 搭建支持<span class="highlight">微服务</span>模式的
+                Admin 2.0 系统；</li>
+              <li>参与用户中心的<span class="highlight">登录注册, API 管理, 子帐号, 安全中心，合规</span>等业务的功能开发，适配合规站改造，性能优化等，主要包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>人机校验组件接入(hCaptcha, GeeTest)；</li>
+                  <li>三方帐号登录注册(tg, google, apple)；</li>
+                  <li>托管子账号；</li>
+                  <li>用户组项目单测覆盖率提升到60%+，离线包方案接入，SSG 接入，Hybrid H5 登录态续期，设备指纹接入，cypress 巡检用例完善等；</li>
+                  <li>用户组项目从 cra 架构迁移至 Next.js 的基础框架搭建：完善各种工具方法和依赖包兼容升级，基础组件改造，dva model 注册，部署流程打通；</li>
+                </ul>
+              </li>
+              <li>使用 <span class="highlight">Next.js, zustand, ts</span> 升级 KuCoin 官网首页为 <span
+                  class="highlight">SSR</span>；使其 FCP, LCP 达到1.4S内</li>
+              <li>作为 <span class="highlight">KYC 的前端负责人</span>，保障业务需求高质量交付，主要包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>使用 RN 重构 APP 端 KYC 首页；</li>
+                  <li>重构 web 端 Global KYC 流程；</li>
+                  <li>接入 Sumsub 使 KYC 成本降低40%，通过率提升10%+；</li>
+                  <li>从 0 到 1 设计了基于 JSON Schema 渲染的合规标准系统，支持处理多种表单类型，表单间多种联动关系、问卷、证件 OCR 等，支持通过后端配置动态生成不同的合规信息收集流程,
+                    目前已应用于主站，泰国，土耳其，澳洲，欧洲等<span class="highlight">合规站</span>的 KYC/KYB 流程，并为支付开卡提供 20 多种合规信息收集流程；</li>
+                  <li>搭建业务相关告警大盘促进团队及时响应线上问题，搭建神策看板分析流程转化率以及观测功能是否正常运行；</li>
+                </ul>
+              </li>
             </ul>
           </div>
 
           <div class="work-category">
-            <div class="category-title">性能与工程升级</div>
+            <div class="category-title">基建方向</div>
             <ul class="responsibilities">
-              <li>用 <span class="highlight">Next.js + Zustand + TS</span> 将官网首页升级为 <span
-                  class="highlight">SSR</span>，FCP / LCP 达到 <span class="highlight">1.4s 内</span>。</li>
-              <li>用户组项目从 <span class="highlight">cra 迁移至 Next.js</span>：依赖与工具方法兼容升级、基础组件改造、dva model
-                注册、部署流程打通；接入 SSG、Hybrid 离线包、登录态续期与设备指纹。</li>
-              <li>推进前端 <span class="highlight">Polyfill 治理</span>，去掉错误配置打入的额外垫片，降低业务项目及公共 npm 包体积、提升性能评分；单测覆盖率提升至
-                <span class="highlight">60%+</span>，完善 Cypress 巡检。</li>
-              <li>参与 KC <span class="highlight">Web / React Native 组件库</span>，并实现推进 Hybrid H5 离线缓存方案。</li>
-            </ul>
-          </div>
-
-          <div class="work-category">
-            <div class="category-title">可观测与质量治理</div>
-            <ul class="responsibilities">
-              <li>用 <span class="highlight">Nest + MongoDB</span> 建设告警中台：收敛全前端告警，支持
-                新告警 → 确认 → 修复 → 关闭 的状态流转，统计各业务组有效率与响应时长；定时催值班，避免告警腐烂、故障持续影响用户。配合
-                <span class="highlight">白屏 / 静态资源异常 / 死循环</span> 探测，支撑在职 <span class="highlight">0 线上故障</span>。</li>
-              <li>开发域名连通性 <span class="highlight">网络探针</span>，具备收集封禁地区用户网络连通性的能力，缩短跨境排障路径。</li>
-              <li>搭建业务告警大盘促进及时响应；搭建神策看板分析 KYC 等流程转化率，并观测功能是否健康运行。</li>
+              <li>参与 KC <span class="highlight">web 组件库</span>开发；</li>
+              <li>实现并推进 Hybrid H5 离线缓存方案；</li>
+              <li>参与 KC <span class="highlight">React Native 组件库</span>开发；</li>
+              <li>前端项目 <span class="highlight">Pollyfill 治理</span>，去掉错误配置生成的额外 Pollyfill 代码，降低业务项目及公共 npm 包的代码体积提升页面性能评分；</li>
+              <li>参与前端<span class="highlight">可观测基建</span>包括：
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                  <li>使用 <span class="highlight">Nest, mongoDB</span>
+                    开发的告警管理系统，收敛所有前端的告警数据支持告警状态的流转管理便于分析各告警组的告警有效率，响应率等，同时还有定时任务通知值班人员及时处理手上的异常告警避免线上问题持续影响用户；</li>
+                  <li>开发域名连通性检测的<span class="highlight">网络探针</span>工具使团队拥有收集封禁地区用户网络连通性的能力，高效解决用户问题；</li>
+                  <li><span class="highlight">白屏告警、静态资源异常告警、页面死循环告警</span>等帮助各业务线快速响应线上问题；</li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -530,8 +528,10 @@
             <span class="period">2018.03 - 2020.03</span>
           </div>
           <ul class="responsibilities">
-            <li>机票预订：<span class="highlight">Vue2 + Nuxt</span> C 端、<span class="highlight">CRA + Redux</span> B 端、
-              <span class="highlight">Taro</span> 小程序「天宝国际航服」。</li>
+            <li>使用 <span class="highlight">Vue2, Nuxt</span> 开发机票预订系统的 C 端网站；</li>
+            <li>使用 <span class="highlight">create-react-app, Redux</span> 开发 B 端的机票预订系统；</li>
+            <li>使用 <span class="highlight">Taro, Taro UI, Redux</span> 开发机票预订小程序：<span class="highlight">天宝国际航服</span>；
+            </li>
           </ul>
         </div>
 
@@ -541,7 +541,8 @@
             <span class="period">2017.06 - 2018.03</span>
           </div>
           <ul class="responsibilities">
-            <li>前端框架搭建与性能优化；可视化运维系统，图表使用 <span class="highlight">D3 / ECharts</span>。</li>
+            <li>负责前端框架基础搭建, 项目代码及<span class="highlight">性能优化</span>；</li>
+            <li>参与可视化运维系统的开发，图表绘制主要使用 <span class="highlight">D3, ECharts</span>；</li>
           </ul>
         </div>
 
@@ -551,8 +552,8 @@
             <span class="period">2016.07 - 2017.06</span>
           </div>
           <ul class="responsibilities">
-            <li>时装租赁 Web 与 <span class="highlight">APICloud</span> 商城 APP；<span class="highlight">Meteor.js + React +
-                MongoDB</span> 全栈后台。</li>
+            <li>参与时装租赁服务的 web 端网站开发以及使用 <span class="highlight">APICloud</span> 开发商城 APP；</li>
+            <li>使用 <span class="highlight">Meteor.js, React, MongoDB</span> 全栈开发公司的后台管理系统；</li>
           </ul>
         </div>
       </div>
@@ -673,7 +674,7 @@
           }
 
           // 保存PDF
-          pdf.save('高级前端-何虎-10年.pdf');
+          pdf.save('web前端-何虎-10年.pdf');
 
           // 恢复按钮显示
           actionButtons.style.display = 'flex';
