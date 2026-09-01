@@ -445,7 +445,9 @@
             <span class="highlight">60%+</span>、Cypress 巡检。</div>
           <div class="skill-item"><span class="highlight">React 生态</span>：React、Redux、umi、dva、Zustand、Next.js；熟悉
             <span class="highlight">React Native</span>、<span class="highlight">Taro</span>（contribute 过仓库）；熟悉
-            Webpack / Rollup / Babel、Nest / MongoDB，以及 Web3 钱包交互。</div>
+            Webpack / Rollup / Babel，以及 Web3 钱包交互。</div>
+          <div class="skill-item"><span class="highlight">服务端 Node.js</span>：熟悉 <span
+              class="highlight">Nest、Meteor.js、MongoDB</span>，用其开发过告警中台、工具平台和 Admin 系统。</div>
         </div>
       </div>
 
@@ -530,8 +532,10 @@
             <span class="period">2018.03 - 2020.03</span>
           </div>
           <ul class="responsibilities">
-            <li>机票预订：<span class="highlight">Vue2 + Nuxt</span> C 端、<span class="highlight">CRA + Redux</span> B 端、
-              <span class="highlight">Taro</span> 小程序「天宝国际航服」。</li>
+            <li>使用 <span class="highlight">Vue2, Nuxt</span> 开发机票预订系统的 C 端网站；</li>
+            <li>使用 <span class="highlight">create-react-app, Redux</span> 开发 B 端的机票预订系统；</li>
+            <li>使用 <span class="highlight">Taro, Taro UI, Redux</span> 开发机票预订小程序：<span class="highlight">天宝国际航服</span>；
+            </li>
           </ul>
         </div>
 
@@ -541,7 +545,8 @@
             <span class="period">2017.06 - 2018.03</span>
           </div>
           <ul class="responsibilities">
-            <li>前端框架搭建与性能优化；可视化运维系统，图表使用 <span class="highlight">D3 / ECharts</span>。</li>
+            <li>负责前端框架基础搭建, 项目代码及<span class="highlight">性能优化</span>；</li>
+            <li>参与可视化运维系统的开发，图表绘制主要使用 <span class="highlight">D3, ECharts</span>；</li>
           </ul>
         </div>
 
@@ -551,8 +556,8 @@
             <span class="period">2016.07 - 2017.06</span>
           </div>
           <ul class="responsibilities">
-            <li>时装租赁 Web 与 <span class="highlight">APICloud</span> 商城 APP；<span class="highlight">Meteor.js + React +
-                MongoDB</span> 全栈后台。</li>
+            <li>参与时装租赁服务的 web 端网站开发以及使用 <span class="highlight">APICloud</span> 开发商城 APP；</li>
+            <li>使用 <span class="highlight">Meteor.js, React, MongoDB</span> 全栈开发公司的后台管理系统；</li>
           </ul>
         </div>
       </div>
@@ -568,24 +573,119 @@
       const resume = document.getElementById('resume');
       const actionButtons = document.querySelector('.action-buttons');
 
-      // 生成PDF功能 - 恢复稳定版本
+      function collectBreakBounds(root, scale) {
+        const groups = [
+          ['.header', 'block'],
+          ['.section-title', 'heading'],
+          ['.profile-text', 'block'],
+          ['.skill-item', 'block'],
+          ['.company-period', 'heading'],
+          ['.job-summary', 'block'],
+          ['.category-title', 'heading'],
+          ['.responsibilities > li', 'block']
+        ];
+        const rootRect = root.getBoundingClientRect();
+        const bounds = [];
+
+        groups.forEach(function (group) {
+          root.querySelectorAll(group[0]).forEach(function (el) {
+            const rect = el.getBoundingClientRect();
+            bounds.push({
+              top: (rect.top - rootRect.top) * scale,
+              bottom: (rect.bottom - rootRect.top) * scale,
+              type: group[1]
+            });
+          });
+        });
+
+        bounds.sort(function (a, b) {
+          return a.top - b.top;
+        });
+
+        return bounds;
+      }
+
+      function getContentBottom(bounds, canvasHeight) {
+        let bottom = 0;
+        for (let i = 0; i < bounds.length; i++) {
+          bottom = Math.max(bottom, bounds[i].bottom);
+        }
+        return Math.min(canvasHeight, Math.ceil(bottom + 8));
+      }
+
+      function findPageEnd(currentY, pageHeight, contentBottom, bounds) {
+        const maxY = Math.min(currentY + pageHeight, contentBottom);
+        if (maxY >= contentBottom - 1) return contentBottom;
+
+        const minUsed = pageHeight * 0.35;
+        let snapTop = null;
+
+        for (let i = 0; i < bounds.length; i++) {
+          const bound = bounds[i];
+          if (bound.bottom <= currentY + 1) continue;
+          if (bound.top >= maxY) break;
+          if (bound.bottom <= maxY) continue;
+          if (bound.top - currentY < minUsed) continue;
+
+          snapTop = bound.top;
+          const prev = bounds[i - 1];
+          if (
+            prev &&
+            prev.type === 'heading' &&
+            prev.top >= currentY &&
+            bound.top - prev.top < pageHeight * 0.2
+          ) {
+            snapTop = prev.top;
+          }
+          break;
+        }
+
+        if (snapTop == null) return Math.floor(maxY);
+        return Math.max(currentY + 1, Math.floor(snapTop));
+      }
+
+      function addCanvasPage(pdf, canvas, startY, sourceHeight, pdfWidth, ratio) {
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = sourceHeight;
+
+        const pageCtx = pageCanvas.getContext('2d');
+        pageCtx.fillStyle = '#ffffff';
+        pageCtx.fillRect(0, 0, canvas.width, sourceHeight);
+        pageCtx.drawImage(
+          canvas,
+          0, startY, canvas.width, sourceHeight,
+          0, 0, canvas.width, sourceHeight
+        );
+
+        const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+        pdf.addImage(pageImgData, 'PNG', 0, 0, pdfWidth, sourceHeight / ratio, undefined, 'FAST');
+      }
+
+      // 生成PDF：按段落边界分页，避免从条目中间切开
       downloadPdfBtn.addEventListener('click', function () {
         loading.style.display = 'flex';
-
-        // 临时隐藏按钮
         actionButtons.style.display = 'none';
+        const prevOverflow = resume.style.overflow;
+        resume.style.overflow = 'visible';
 
-        // 使用html2canvas和jsPDF生成PDF
         html2canvas(resume, {
-          scale: 2, // 提高清晰度
+          scale: 2,
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
           removeContainer: true,
+          height: resume.scrollHeight,
+          windowHeight: resume.scrollHeight,
           onclone: function (clonedDoc) {
             const clonedResume = clonedDoc.getElementById('resume');
             clonedResume.style.width = '210mm';
-            clonedResume.style.minHeight = '297mm';
+            clonedResume.style.minHeight = '0';
+            clonedResume.style.height = 'auto';
+            clonedResume.style.overflow = 'visible';
+            clonedResume.style.boxShadow = 'none';
+            const clonedButtons = clonedDoc.querySelector('.action-buttons');
+            if (clonedButtons) clonedButtons.style.display = 'none';
           }
         }).then(canvas => {
           const pdf = new jspdf.jsPDF({
@@ -595,91 +695,50 @@
             compress: true
           });
 
-          // A4纸张尺寸（mm）
           const pdfWidth = 210;
           const pdfHeight = 297;
-
-          // canvas的实际尺寸（像素）
           const canvasWidth = canvas.width;
           const canvasHeight = canvas.height;
-
-          // 计算比例
           const ratio = canvasWidth / pdfWidth;
-
-          // 每页在canvas上的高度（像素）
           const pageHeightInCanvas = pdfHeight * ratio;
+          const scale = canvasWidth / resume.offsetWidth;
+          const bounds = collectBreakBounds(resume, scale);
+          const contentBottom = getContentBottom(bounds, canvasHeight);
+          const minPageSlice = Math.floor(pageHeightInCanvas * 0.04);
 
-          // 计算总页数
-          const totalPages = Math.ceil(canvasHeight / pageHeightInCanvas);
-
-          // 如果只有一页，直接输出
-          if (totalPages === 1) {
+          if (contentBottom <= pageHeightInCanvas) {
             const imgData = canvas.toDataURL('image/png', 1.0);
-            const imgWidth = pdfWidth;
-            const imgHeight = (canvasHeight * pdfWidth) / canvasWidth;
-            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, contentBottom / ratio, undefined, 'FAST');
           } else {
-            // 多页处理 - 简单分页，避免内容被剪切
             let currentY = 0;
+            let pageIndex = 0;
 
-            for (let page = 0;page < totalPages;page++) {
-              if (page > 0) {
+            while (currentY < contentBottom - minPageSlice) {
+              let pageEnd = findPageEnd(currentY, pageHeightInCanvas, contentBottom, bounds);
+              if (pageEnd <= currentY) {
+                pageEnd = Math.min(currentY + pageHeightInCanvas, contentBottom);
+              }
+
+              const sourceHeight = pageEnd - currentY;
+              if (sourceHeight < minPageSlice) break;
+
+              if (pageIndex > 0) {
                 pdf.addPage();
               }
 
-              // 计算当前页应该结束的位置
-              let targetEndY = currentY + pageHeightInCanvas;
-
-              // 确保不超出canvas范围
-              targetEndY = Math.min(targetEndY, canvasHeight);
-
-              // 计算当前页的实际高度
-              const sourceHeight = targetEndY - currentY;
-
-              if (sourceHeight <= 0) break;
-
-              // 创建临时canvas来裁剪当前页的内容
-              const pageCanvas = document.createElement('canvas');
-              pageCanvas.width = canvasWidth;
-              pageCanvas.height = sourceHeight;
-
-              const pageCtx = pageCanvas.getContext('2d');
-              // 填充白色背景
-              pageCtx.fillStyle = '#ffffff';
-              pageCtx.fillRect(0, 0, canvasWidth, sourceHeight);
-
-              // 从原canvas中截取当前页的内容
-              pageCtx.drawImage(
-                canvas,
-                0, currentY, canvasWidth, sourceHeight,
-                0, 0, canvasWidth, sourceHeight
-              );
-
-              // 转换为图片数据
-              const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
-
-              // 计算在PDF中的高度
-              const pdfPageHeight = sourceHeight / ratio;
-
-              // 添加到PDF
-              pdf.addImage(pageImgData, 'PNG', 0, 0, pdfWidth, pdfPageHeight, undefined, 'FAST');
-
-              // 更新当前位置
-              currentY = targetEndY;
-
-              // 如果已经到达底部，提前结束
-              if (currentY >= canvasHeight) break;
+              addCanvasPage(pdf, canvas, currentY, sourceHeight, pdfWidth, ratio);
+              currentY = pageEnd;
+              pageIndex += 1;
             }
           }
 
-          // 保存PDF
           pdf.save('高级前端-何虎-10年.pdf');
-
-          // 恢复按钮显示
+          resume.style.overflow = prevOverflow;
           actionButtons.style.display = 'flex';
           loading.style.display = 'none';
         }).catch(error => {
           console.error('生成PDF时出错:', error);
+          resume.style.overflow = prevOverflow;
           actionButtons.style.display = 'flex';
           loading.style.display = 'none';
           alert('生成PDF失败，请重试');
